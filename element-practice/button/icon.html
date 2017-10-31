@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-default/index.css">
+	</head>
+	<body>
+		<div id="app">
+			<c-button>haha</c-button>
+			<c-button type="primary">默认样式</c-button>
+			<c-button type="text">文字按钮</c-button>
+			<c-button type="success" @haha="successClick">成功按钮</c-button>
+		    <c-button type="warning" :plain="true">警告按钮</c-button>
+		    <c-button type="danger" size="large">危险按钮</c-button>
+		    <c-button type="info" :loading="true">信息按钮</c-button>
+		</div>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script>
+			Vue.component('c-button', {
+				props: {
+					type: {
+						type: String,
+						default: 'default'
+					},
+					size: String,
+					icon: {
+						type: String,
+						default: ''
+					},
+					nativeType: {
+						type: String,
+						default: 'button'
+					},
+					loading: Boolean,
+					disabled: Boolean,
+					plain: Boolean,
+					autofocus: Boolean
+				},
+				template: 
+					`<button :disabled="disabled" class="el-button"
+					 @click="handleClick"
+					 :autofocus="autofocus"
+					 :type="nativeType"
+					 :class="[
+					 	type ? 'el-button--' + type : '',
+					 	size ? 'el-button--' + size : '',
+					 	{
+					 		'is-disabled': disabled,
+					 		'is-loading': loading,
+					 		'is-plain': plain
+					 	}
+					 ]"
+					 >
+						<i class="el-icon-loading" v-if="loading"></i>
+						<i class="'el-icon-' + icon" v-if="icon && !loading"></i>
+						<span v-if="$slots.default"><slot></slot></span>
+					 </button>
+					`,
+				methods: {
+					handleClick(evt) {
+						alert("ok");
+						this.$emit('haha', evt);
+					}
+				}
+			});
+			new Vue({
+				el: '#app',
+				data: {
+					
+				},
+				methods: {
+					successClick() {
+						alert("heh")
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
