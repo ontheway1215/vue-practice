@@ -26,7 +26,7 @@
     <transition name="component-fade" mode="out-in">
       <div class="nav" v-if="showCategory">
         <ul>
-          <li v-for="item in categoryArr">
+          <li v-for="item in categoryArr" :style="{height: categoryHeight * 0.47 + 'px'}">
             <a :href="'/search/' + item.text">
               <img :src="item.background" alt="item.text">
               <span class="text">#{{item.text}}</span>
@@ -54,7 +54,8 @@
         results: [],
         categoryArr: [],
         showCategory: false,
-        switchIcon: 'https://static.dongtu.com/icon-switch.png'
+        switchIcon: 'https://static.dongtu.com/icon-switch.png',
+        categoryHeight: 0
       }
     },
     components: {
@@ -88,10 +89,15 @@
             this.categoryArr = res.data_list
           }
         })
+      },
+      getCurrentScreen () {
+        this.categoryHeight = window.screen.width
       }
     },
     mounted () {
       this.getCategory()
+      this.getCurrentScreen()
+      window.addEventListener('resize', this.getCurrentScreen)
     }
   }
 </script>

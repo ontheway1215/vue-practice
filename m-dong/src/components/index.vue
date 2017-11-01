@@ -3,7 +3,10 @@
     <searchbar @focus="onFocus" @cancel="onCancel" @submit="onSubmit" @switchTab="switchCategory"></searchbar>
     <div class="main" v-if="mainPage" :style="{position: mainPosition}">
       <hottag :tagArr="tagArr"></hottag>
-      <hotgif></hotgif>
+      <div class="hot-gif">
+        <h2>热门动图</h2>
+        <waterfall :waterfallData="hotGif" :isLoading="isLoading" :noMore="noMore"></waterfall>
+      </div>
     </div>
     <div class="search-input-page" v-if="searchInputPage">
       <historysearch :historyArr="historyArr" @clear="clearHistory"></historysearch>
@@ -16,10 +19,11 @@
 <script type="text/ecmascript-6">
   import searchbar from '@/components/searchbar'
   import hottag from '@/components/hottag'
-  import hotgif from '@/components/hotgif'
   import historysearch from '@/components/historysearch'
   import usualtag from '@/components/usualtag'
   import Foot from '@/components/footer'
+  import waterfall from '@/components/waterfall'
+  import { hotGif } from '@/assets/js/api/hotgif'
   import { hotTag } from '@/assets/js/api/hottag'
   import { ERR_OK } from '@/assets/js/api/config'
   export default {
@@ -29,16 +33,21 @@
         mainPage: true,
         historyArr: [],
         mainPosition: 'static',
-        tagArr: []
+        tagArr: [],
+        hotGif: [],
+        isLoading: false,
+        noMore: false,
+        p: 1,
+        isFinished: true
       }
     },
     components: {
       searchbar,
       hottag,
-      hotgif,
       historysearch,
       usualtag,
-      Foot
+      Foot,
+      waterfall
     },
     methods: {
       onFocus () {
@@ -86,6 +95,40 @@
         if (window.innerWidth > 414) {
           window.location.href = 'http://dongtu.com'
         }
+      },
+      _getHotGif () {
+        hotGif(this.p).then((res) => {
+          if (res.error_code === ERR_OK) {
+            this.hotGif = res.data_list
+          }
+        })
+      },
+      handleScroll () {
+        if (window.pageYOffset + window.innerHeight >= document.documentElement.scrollHeight) {
+          if (this.isFinished) {
+            setTimeout(() => {
+              this.p = this.p + 1
+              this._getLoadMore(this.p)
+              this.isFinished = false
+            }, 500)
+          }
+        }
+      },
+      _getLoadMore (p) {
+        this.isLoading = true
+        hotGif(p).then((res) => {
+          if (res.error_code === ERR_OK) {
+            this.hotGif.push.apply(this.hotGif, res.data_list)
+            if (res.data_list.length === 0) {
+              this.isFinished = false
+              this.noMore = true
+            } else {
+              this.isFinished = true
+              this.noMore = false
+            }
+            this.isLoading = false
+          }
+        })
       }
     },
     created () {
@@ -98,7 +141,9 @@
     mounted () {
       this.getHistory()
       this.onResize()
+      this._getHotGif()
       window.addEventListener('resize', this.onResize)
+      window.addEventListener('scroll', this.handleScroll)
     }
   }
 </script>
@@ -109,6 +154,14 @@
     min-height: 100vh
     .main
       display: block
+      .hot-gif
+        background: #191919
+        margin: 0 10px
+        h2
+          font-size: 22px
+          color: #fff
+          padding: 10px 0
+          text-align: left
     .search-input-page
       padding: 0 10px
       display: block

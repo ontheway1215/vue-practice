@@ -18,7 +18,7 @@
             <span class="tag" style="margin-left: 0">{{ipList.name}}</span>
           </div>
         </a>
-        <div class="tag" v-for="item in gifDetail.keywords">
+        <div class="tag" v-for="item in keyWord">
           <a :href="'/search/' + item">
             <span class="tag">{{item}}</span>
           </a>
@@ -34,10 +34,9 @@
 
 <script type="text/ecmascript-6">
   import Searchbar from '@/components/searchbar'
-  import { gifDetail, getRelation } from '@/assets/js/api/gifdetail'
+  import { gifDetail, getRelation, getLoadMore } from '@/assets/js/api/gifdetail'
   import { ERR_OK } from '@/assets/js/api/config'
   import Waterfall from '@/components/waterfall'
-
   export default {
     data () {
       return {
@@ -48,7 +47,10 @@
         isLoading: false,
         noMore: false,
         guid: '',
-        mainPosition: 'static'
+        mainPosition: 'static',
+        p: 1,
+        isFinished: true,
+        keyWord: []
       }
     },
     components: {
@@ -63,6 +65,15 @@
           if (res.error_code === ERR_OK) {
             this.gifDetail = res.data
             this.ipList = res.data.ip_list[0]
+            var name = res.data.ip_list[0] ? res.data.ip_list[0].name : ''
+            var currentWord = res.data.keywords.slice(0, 3)
+            for (var i = 0; i < currentWord.length; i++) {
+              if (name === currentWord[i]) {
+                return
+              } else {
+                this.keyWord.push(currentWord[i])
+              }
+            }
             var word = res.data.keywords.slice(0, 3).join(' ')
             var relationkeywords = res.data.keywords.slice(0, 3)
             this.searchWord = word
@@ -87,12 +98,40 @@
         if (window.innerWidth > 414) {
           window.location.href = `http://dongtu.com/gifdetail/${this.guid}`
         }
+      },
+      _getLoadMore (q, p) {
+        this.isLoading = true
+        getLoadMore(q, p).then((res) => {
+          if (res.error_code === ERR_OK) {
+            this.relationList.push.apply(this.relationList, res.gifs)
+            if (res.gifs.length === 0) {
+              this.isFinished = false
+              this.noMore = true
+            } else {
+              this.isFinished = true
+              this.noMore = false
+            }
+            this.isLoading = false
+          }
+        })
+      },
+      handleScroll () {
+        if (window.pageYOffset + window.innerHeight >= document.documentElement.scrollHeight) {
+          if (this.isFinished) {
+            setTimeout(() => {
+              this.p = this.p + 1
+              this._getLoadMore(this.relationkeywords, this.p)
+              this.isFinished = false
+            }, 500)
+          }
+        }
       }
     },
     mounted () {
       this.getDetailPic()
       this.onResize()
       window.addEventListener('resize', this.onResize)
+      window.addEventListener('scroll', this.handleScroll)
     }
   }
 </script>
@@ -137,10 +176,10 @@
           flex-direction: row
           align-items: center
           img
-            width: 30px
-            height: 30px
+            width: 23px
+            height: 23px
         .tag
-          padding: 5px 15px
+          padding: 2px
           background: #212121
           color: #fff
           font-size: 14px

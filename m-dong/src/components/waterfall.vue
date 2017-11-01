@@ -19,8 +19,8 @@
       >
         <div class="img-wrapper" :style="{backgroundColor: '#262626'}">
           <a :href="'/gifdetail/' + item.guid">
-            <img v-if="isSupportWebp" v-lazy="item.webp || item.main" class="" :alt="item.text" :title="item.text">
-            <img v-else v-lazy="item.main" class="" :alt="item.text" :title="item.text">
+            <!--<img v-if="isSupportWebp" v-lazy="item.webp || item.main" class="" :alt="item.text" :title="item.text">-->
+            <img v-lazy="item.main" class="" :alt="item.text" :title="item.text">
           </a>
         </div>
       </waterfall-slot>
