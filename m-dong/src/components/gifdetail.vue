@@ -92,6 +92,7 @@
     mounted () {
       this.getDetailPic()
       this.onResize()
+      window.addEventListener('resize', this.onResize)
     }
   }
 </script>

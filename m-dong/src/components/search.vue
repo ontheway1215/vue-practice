@@ -126,6 +126,7 @@
       this.getSearchResult()
       window.addEventListener('scroll', this.handleScroll)
       this.onResize()
+      window.addEventListener('resize', this.onResize)
     }
   }
 </script>

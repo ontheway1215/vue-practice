@@ -98,6 +98,7 @@
     mounted () {
       this.getHistory()
       this.onResize()
+      window.addEventListener('resize', this.onResize)
     }
   }
 </script>
