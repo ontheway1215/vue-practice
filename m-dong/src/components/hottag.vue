@@ -18,7 +18,7 @@
           <ul class="pic-list" ref="picList">
             <li class="pic-item" v-for="item in items.emoticions">
               <router-link :to="'/gifdetail/' + item.guid">
-                <img :src="item.gif_thumb" width="120" height="90" alt="">
+                <img :src="item.gif_thumb" alt="">
               </router-link>
             </li>
           </ul>
@@ -50,13 +50,9 @@
         if (this.tagArr.length) {
           let picWidth = 120
           let margin = 6
+          var width = picWidth * temArr[0].emoticions.length + margin * temArr[0].emoticions.length
           var picWrapper = document.querySelectorAll('.pic-wrapper')
           var picList = document.querySelectorAll('.pic-list')
-//          var width
-//          for (var j = 0; j < temArr[0].emoticions.length; j++) {
-//            width[i] += (temArr[i].emoticions[j].width / temArr[i].emoticions[j].height)
-//          }
-          let width = (picWidth + margin) * temArr[0].emoticions.length - margin
           for (let i = 0; i < temArr.length; i++) {
             picList[i].style.width = width + 'px'
             this.picScroll = new BScroll(picWrapper[i], {
@@ -135,7 +131,12 @@
             .pic-item
               display inline-block
               margin-right 6px
-              height 90px
+              height 120px
+              width: 120px
+              img
+                width: 100%
+                height: 100%
+                object-fit: cover
               &last-child
                 margin 0
 </style>

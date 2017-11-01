@@ -6,6 +6,7 @@ import Gifdetail from '@/components/gifdetail'
 import Agreement from '@/components/agreement'
 import Scroller from '@/components/scroller'
 import U from '@/components/u'
+import Test from '@/components/Test'
 
 Vue.use(Router)
 
@@ -41,6 +42,11 @@ export default new Router({
       path: '/u/:id',
       name: 'U',
       component: U
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
     }
   ]
 })

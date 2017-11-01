@@ -68,9 +68,7 @@
             var name = res.data.ip_list[0] ? res.data.ip_list[0].name : ''
             var currentWord = res.data.keywords.slice(0, 3)
             for (var i = 0; i < currentWord.length; i++) {
-              if (name === currentWord[i]) {
-                return
-              } else {
+              if (name !== currentWord[i]) {
                 this.keyWord.push(currentWord[i])
               }
             }
