@@ -26,6 +26,7 @@
   import { hotGif } from '@/assets/js/api/hotgif'
   import { hotTag } from '@/assets/js/api/hottag'
   import { ERR_OK } from '@/assets/js/api/config'
+  import { IsPC } from '@/assets/js/util'
   export default {
     data () {
       return {
@@ -91,8 +92,7 @@
         localStorage.setItem('historyArr', this.historyArr)
       },
       onResize () {
-        console.log(window.innerWidth)
-        if (window.innerWidth > 414) {
+        if (IsPC()) {
           window.location.href = 'http://dongtu.com'
         }
       },

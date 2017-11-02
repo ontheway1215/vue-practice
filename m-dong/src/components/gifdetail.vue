@@ -36,6 +36,7 @@
   import Searchbar from '@/components/searchbar'
   import { gifDetail, getRelation, getLoadMore } from '@/assets/js/api/gifdetail'
   import { ERR_OK } from '@/assets/js/api/config'
+  import { IsPC } from '@/assets/js/util'
   import Waterfall from '@/components/waterfall'
   export default {
     data () {
@@ -93,7 +94,7 @@
       },
       onResize () {
         console.log(window.innerWidth)
-        if (window.innerWidth > 414) {
+        if (IsPC()) {
           window.location.href = `http://dongtu.com/gifdetail/${this.guid}`
         }
       },
@@ -174,8 +175,8 @@
           flex-direction: row
           align-items: center
           img
-            width: 23px
-            height: 23px
+            width: 26px
+            height: 26px
         .tag
           padding: 2px
           background: #212121

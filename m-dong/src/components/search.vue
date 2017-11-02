@@ -25,6 +25,7 @@
   import searchbar from '@/components/searchbar'
   import { ERR_OK } from '@/assets/js/api/config'
   import { ipCheck } from '@/assets/js/api/ipcheck'
+  import { IsPC } from '@/assets/js/util'
   export default {
     data () {
       return {
@@ -117,7 +118,7 @@
         })
       },
       onResize () {
-        if (window.innerWidth > 414) {
+        if (IsPC()) {
           window.location.href = `http://dongtu.com/search/${this.value}`
         }
       }

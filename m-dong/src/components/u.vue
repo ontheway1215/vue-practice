@@ -33,6 +33,7 @@
   import { Popup } from 'vux'
   import searchbar from '@/components/searchbar'
   import { ERR_OK } from '@/assets/js/api/config'
+  import { IsPC } from '@/assets/js/util'
   import { ipDetail } from '@/assets/js/api/ipdetail'
   import Waterfall from '@/components/waterfall'
   export default {
@@ -83,7 +84,7 @@
         })
       },
       onResize () {
-        if (window.innerWidth > 414) {
+        if (IsPC()) {
           window.location.href = `http://dongtu.com/u/${this.q}`
         }
       }

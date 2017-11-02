@@ -22,11 +22,11 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import { IsPC } from '@/assets/js/util'
   export default {
     methods: {
       onResize () {
-        console.log(window.innerWidth)
-        if (window.innerWidth > 100) {
+        if (IsPC()) {
           window.location.href = `http://dongtu.com/agreement`
         }
       }

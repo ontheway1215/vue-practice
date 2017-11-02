@@ -101,7 +101,7 @@ For detailed explanation, checkout the [Douban Api V2](https://developers.douban
 │   ├── check-versions.js
 │   ├── dev-client.js
 │   ├── dev-server.js
-│   ├── utils.js
+│   ├── util.js
 │   ├── vue-loader.conf.js
 │   ├── webpack.base.conf.js
 │   ├── webpack.dev.conf.js
