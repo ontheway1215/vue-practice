@@ -139,10 +139,10 @@
       })
     },
     mounted () {
-      this.getHistory()
       this.onResize()
-      this._getHotGif()
       window.addEventListener('resize', this.onResize)
+      this.getHistory()
+      this._getHotGif()
       window.addEventListener('scroll', this.handleScroll)
     }
   }
@@ -167,5 +167,4 @@
       display: block
       .usual-tag
         margin-top: 20px
-
 </style>

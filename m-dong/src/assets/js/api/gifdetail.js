@@ -8,7 +8,7 @@ import axios from 'axios'
 import { currentIp, protocol } from './config'
 
 export function gifDetail (guid) {
-  const url = `${protocol}://${currentIp}:9999/gif/detail/${guid}`
+  const url = `${protocol}://${currentIp}:9999/gif/detail/${guid}?is_mobile=true`
 
   return axios.get(url)
     .then(function (res) {
