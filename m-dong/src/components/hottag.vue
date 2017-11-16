@@ -18,7 +18,7 @@
           <ul class="pic-list" ref="picList">
             <li class="pic-item" v-for="item in items.emoticions">
               <router-link :to="'/gifdetail/' + item.guid">
-                <img :src="item.gif_thumb" alt="">
+                <img :src="item.gif_thumb || item.main" alt="">
               </router-link>
             </li>
           </ul>

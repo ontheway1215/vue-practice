@@ -49,7 +49,9 @@
         show: false,
         ipDetailArr: [],
         picArr: [],
-        q: ''
+        q: '',
+        currentP: 1,
+        isFinished: true
       }
     },
     methods: {
@@ -75,11 +77,38 @@
       getIpDetail () {
         const q = window.location.pathname.split('/')[2]
         this.q = q
-        console.log(decodeURI(q))
-        ipDetail(q).then((res) => {
+        ipDetail(q, this.currentP).then((res) => {
           if (res.error_code === ERR_OK) {
             this.ipDetailArr = res.data
             this.picArr = res.data.emoticionList
+          }
+        })
+      },
+      handleScroll () {
+        if (window.pageYOffset + window.innerHeight >= document.documentElement.scrollHeight) {
+          var currentSearchWord = window.location.pathname.split('/')[2] || ''
+          if (this.isFinished) {
+            setTimeout(() => {
+              this.currentP = this.currentP + 1
+              this._getLoadMore(decodeURI(currentSearchWord), this.currentP)
+              this.isFinished = false
+            }, 500)
+          }
+        }
+      },
+      _getLoadMore (q, p) {
+        this.isLoading = true
+        ipDetail(q, p).then((res) => {
+          if (res.error_code === ERR_OK) {
+            this.picArr.push.apply(this.picArr, res.data.emoticionList)
+            if (res.data.emoticionList.length === 0) {
+              this.isFinished = false
+              this.noMore = true
+            } else {
+              this.isFinished = true
+              this.noMore = false
+            }
+            this.isLoading = false
           }
         })
       },
@@ -93,6 +122,7 @@
       this.onResize()
       window.addEventListener('resize', this.onResize)
       this.getIpDetail()
+      window.addEventListener('scroll', this.handleScroll)
     }
   }
 </script>

@@ -5,8 +5,8 @@
  */
 import axios from 'axios'
 
-export function ipDetail (q) {
-  const url = `http://dongtu.com:9999/ipdetail/${q}`
+export function ipDetail (q, p) {
+  const url = `http://dongtu.com:9999/ipdetail/${q}?page=${p}`
   return axios.get(url)
     .then(function (res) {
       return Promise.resolve(res.data)
