@@ -85,7 +85,8 @@
               }
             })
           } else {
-            this.$router.push({path: '/u/' + q})
+            let ipCode = res.data.inner_link ? res.data.inner_link : ''
+            this.$router.push({path: '/u/' + ipCode})
           }
         })
       },
@@ -119,7 +120,7 @@
       },
       onResize () {
         if (IsPC()) {
-          window.location.href = `http://dongtu.com/search/${this.value}`
+          window.location.href = `http://192.168.19.173:7000/search/${this.value}`
         }
       }
     },

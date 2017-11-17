@@ -1,5 +1,5 @@
 <template>
-  <div class="ipPage">
+  <div class="ipPage" v-show="picArr.length > 0">
     <searchbar @focus="onFocus" @cancel="onCancel" @submit="onSubmit" @switchTab="switchCategory"></searchbar>
     <div class="banner" @click="showInfo">
       <img :src="ipDetailArr.miniBanner" alt="">
@@ -114,14 +114,14 @@
       },
       onResize () {
         if (IsPC()) {
-          window.location.href = `http://dongtu.com/u/${this.q}`
+          window.location.href = `http://192.168.19.173:7000/u/${this.q}`
         }
       }
     },
     mounted () {
+      this.getIpDetail()
       this.onResize()
       window.addEventListener('resize', this.onResize)
-      this.getIpDetail()
       window.addEventListener('scroll', this.handleScroll)
     }
   }

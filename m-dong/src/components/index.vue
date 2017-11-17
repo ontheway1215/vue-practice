@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-show="tagArr.length > 0">
     <searchbar @focus="onFocus" @cancel="onCancel" @submit="onSubmit" @switchTab="switchCategory"></searchbar>
     <div class="main" v-if="mainPage" :style="{position: mainPosition}">
       <hottag :tagArr="tagArr"></hottag>
